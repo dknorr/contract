@@ -1,8 +1,31 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import logo from "./logo.svg";
+import "./App.css";
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      contracts: [],
+      curName: "",
+      curCompany: "",
+      curDetails: ""
+    };
+  }
+  changeParent = (field, value) => {
+    this.setState({
+      [field]: value
+    });
+  };
+
+  addContract = () => {
+    this.state.contracts.push({
+      name: this.state.curName,
+      company: this.state.curCompany,
+      details: this.state.curDetails
+    });
+  };
+
   render() {
     return (
       <div className="App">
