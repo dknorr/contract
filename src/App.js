@@ -13,13 +13,13 @@ class App extends Component {
       curCompany: "",
       curDetails: ""
     };
+    this.addContract = this.addContract.bind(this);
   }
   changeParent = (field, value) => {
     this.setState({
       [field]: value
     });
   };
-
   addContract = () => {
     const contract = {
       name: this.state.curName,
@@ -30,9 +30,9 @@ class App extends Component {
     const contractsRef = firebase.database().ref("contracts");
     contractsRef.push(contract);
     this.setState({
-      name: "",
-      company: "",
-      details: ""
+      curName: "",
+      curCompany: "",
+      curDetails: ""
     });
   };
 

@@ -15,20 +15,28 @@ class Form extends Component {
         <Input
           onChange={e => changeParent("curName", e.target.value)}
           placeholder="Name"
+          value={this.props.curName}
         />
         <div />
         <Input
           onChange={e => changeParent("curCompany", e.target.value)}
           placeholder="Company"
+          value={this.props.curCompany}
         />
         <div />
         <Input
           onChange={e => changeParent("curDetails", e.target.value)}
           placeholder="Details"
+          value={this.props.curName}
         />
         <div />
         <br />
-        <Button onClick={addContract} variant="outlined" color="primary">
+        <Button
+          onClick={addContract}
+          variant="outlined"
+          color="primary"
+          type="submit"
+        >
           Submit Contract
         </Button>
       </form>
