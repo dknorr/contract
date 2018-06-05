@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
+import firebase from "./firebase";
+import Display from "./Display.js";
+import Form from "./Form.js";
 import "./App.css";
 
 class App extends Component {
@@ -19,23 +21,48 @@ class App extends Component {
   };
 
   addContract = () => {
-    this.state.contracts.push({
+    const contract = {
       name: this.state.curName,
       company: this.state.curCompany,
       details: this.state.curDetails
+    };
+    this.state.contracts.push(contract);
+    const contractsRef = firebase.database().ref("contracts");
+    contractsRef.push(contract);
+    this.setState({
+      name: "",
+      company: "",
+      details: ""
     });
   };
 
+  componentDidMount() {
+    const contractsRef = firebase.database().ref("contracts");
+    contractsRef.on("value", snapshot => {
+      let contracts = snapshot.val();
+      let newState = [];
+      for (let contract in contracts) {
+        newState.push({
+          name: contracts[contract].name,
+          company: contracts[contract].company,
+          details: contracts[contract].details
+        });
+      }
+      this.setState({
+        contracts: newState
+      });
+    });
+  }
   render() {
+    let contractDisplay = this.state.contracts.map(con => {
+      return <Display contract={con} />;
+    });
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
+        <p class="Title">Dark Brotherhood</p>
+        <Form addContract={this.addContract} changeParent={this.changeParent} />
+        <br />
+        <div class="Display">{contractDisplay}</div>
       </div>
     );
   }
