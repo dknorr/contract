@@ -35,7 +35,10 @@ class App extends Component {
       curDetails: ""
     });
   };
-
+  removeContract = contractId => {
+    const contractRef = firebase.database().ref(`/contracts/${contractId}`);
+    contractRef.remove();
+  };
   componentDidMount() {
     const contractsRef = firebase.database().ref("contracts");
     contractsRef.on("value", snapshot => {
@@ -43,19 +46,23 @@ class App extends Component {
       let newState = [];
       for (let contract in contracts) {
         newState.push({
+          id: contract,
           name: contracts[contract].name,
           company: contracts[contract].company,
           details: contracts[contract].details
         });
       }
       this.setState({
-        contracts: newState
+        contracts: newState,
+        curName: "",
+        curCompany: "",
+        curDetails: ""
       });
     });
   }
   render() {
     let contractDisplay = this.state.contracts.map(con => {
-      return <Display contract={con} />;
+      return <Display contract={con} removeContract={this.removeContract} />;
     });
     return (
       <div>
